@@ -17,6 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          src="https://kit.fontawesome.com/d0674de6ae.js"
+          crossOrigin="anonymous"
+          async
+        />
+      </head>
       <body className={font.className}>
         <div className={"h-dvh flex flex-col"}>
           <NavigationBar className={"flex-none"} />

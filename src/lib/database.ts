@@ -21,3 +21,13 @@ export async function getRedirect(id: string) {
     return undefined;
   }
 }
+
+export async function getAllRedirects() {
+  try {
+    const keys = await redis.keys("go:*");
+    const redirects = await redis.mget<Redirect[]>(keys);
+    return redirects;
+  } catch (error) {
+    return [];
+  }
+}
