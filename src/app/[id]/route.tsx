@@ -1,8 +1,6 @@
 import { getRedirect } from "@/lib/database";
 import { redirect } from "next/navigation";
 
-export const revalidate = 0;
-
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
