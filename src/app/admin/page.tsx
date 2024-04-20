@@ -1,4 +1,4 @@
-import { getAllRedirects } from "@/lib/database";
+import { getAllRedirects } from "@/database";
 import Link from "next/link";
 
 export default async function Page() {

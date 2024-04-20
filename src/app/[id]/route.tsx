@@ -1,4 +1,4 @@
-import { getRedirect } from "@/lib/database";
+import { getRedirect } from "@/database";
 import { redirect } from "next/navigation";
 
 export const revalidate = 0;
