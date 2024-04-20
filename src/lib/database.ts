@@ -12,12 +12,7 @@ export type Redirect = {
 
 export async function getRedirect(id: string) {
   try {
-    const redirect = await redis.get<string>(`go:${id}`).then((res) => {
-      if (!res) {
-        return undefined;
-      }
-      return JSON.parse(res) as Redirect;
-    });
+    const redirect = await redis.get<Redirect>(`go:${id}`);
     if (!redirect) {
       return undefined;
     }
