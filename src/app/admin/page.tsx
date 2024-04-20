@@ -9,7 +9,7 @@ export default async function Page() {
         <input
           className={"flex-1 input input-bordered"}
           type="text"
-          placeholder="URL"
+          placeholder="Search"
         />
         <button className={"flex-none btn btn-primary"} type={"submit"}>
           Add
@@ -28,10 +28,16 @@ export default async function Page() {
               <div>{redirect.description}</div>
             </div>
             <div className={"flex-none flex items-center gap-4"}>
-              <span className={"cursor-pointer transition hover:opacity-90"} title={"Edit"}>
+              <span
+                className={"cursor-pointer transition hover:opacity-90"}
+                title={"Edit"}
+              >
                 <i className="fa-solid fa-pen" />
               </span>
-              <span className={"cursor-pointer transition hover:opacity-90"} title={"Delete"}>
+              <span
+                className={"cursor-pointer transition hover:opacity-90"}
+                title={"Delete"}
+              >
                 <i className="fa-solid fa-trash" />
               </span>
             </div>

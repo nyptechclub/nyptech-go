@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@upstash/redis": "^1.30.0",
-    "cookies-next": "^4.1.1",
     "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18"
