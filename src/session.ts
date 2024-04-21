@@ -23,7 +23,7 @@ export async function decrypt(input: string): Promise<any> {
   return payload;
 }
 
-export async function login(key: string) {
+export async function createSession(key: string) {
   if (key !== AdminKey)
     return false;
   const user = { key };
@@ -31,10 +31,6 @@ export async function login(key: string) {
   const session = await encrypt({ user, expires });
   cookies().set("session", session, { expires, httpOnly: true });
   return true;
-}
-
-export async function logout() {
-  cookies().set("session", "", { expires: new Date(0) });
 }
 
 export async function getSession() {
@@ -58,4 +54,8 @@ export async function updateSession(req: NextRequest, res?: NextResponse) {
     expires: parsed.expires,
   });
   return response;
+}
+
+export async function deleteSession() {
+  cookies().set("session", "", { expires: new Date(0) });
 }

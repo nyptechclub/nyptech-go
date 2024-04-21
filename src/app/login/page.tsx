@@ -1,12 +1,12 @@
 import SubmitButton from "@/components/submit-button";
-import { login } from "@/session";
+import { createSession } from "@/session";
 import { redirect } from "next/navigation";
 
 export default function Page() {
   const handleLogin = async (event: FormData) => {
     "use server";
     const key = event.get("key") as string;
-    if (await login(key)) {
+    if (await createSession(key)) {
       redirect("/admin");
     } else {
       // TODO: Alert user that login failed

@@ -1,11 +1,11 @@
 import SubmitButton from "@/components/submit-button";
-import { logout } from "@/session";
+import { deleteSession } from "@/session";
 import { redirect } from "next/navigation";
 
 export default function Page() {
   const handleLogout = async () => {
     "use server";
-    await logout();
+    await deleteSession();
     redirect("/");
   };
 

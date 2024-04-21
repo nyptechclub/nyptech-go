@@ -8,7 +8,11 @@ export default async function Page() {
   return (
     <main className={"h-full py-4"}>
       <div className={"mx-auto w-[90%] flex flex-col gap-4"}>
-        <ul className={"menu menu-horizontal bg-base-200 rounded-box"}>
+        <ul
+          className={
+            "menu menu-vertical sm:menu-horizontal bg-base-200 rounded-box"
+          }
+        >
           <li className={"flex-1 flex justify-center"}>
             <span className={"text-lg font-bold"}>
               Welcome back, Administrator!
@@ -17,7 +21,7 @@ export default async function Page() {
           <li>
             <Link href={"/admin/add"}>
               <Plus />
-              Add Redirect
+              Add
             </Link>
           </li>
           <li>
@@ -40,10 +44,18 @@ export default async function Page() {
                 <div>{redirect.description}</div>
               </div>
               <div className={"flex-none flex items-center gap-4"}>
-                <Link href={`/admin/edit/${redirect.id}`}>
+                <Link
+                  className={"transition hover:opacity-80"}
+                  title={"Edit"}
+                  href={`/admin/edit/${redirect.id}`}
+                >
                   <Pencil />
                 </Link>
-                <Link href={`/admin/delete/${redirect.id}`}>
+                <Link
+                  className={"transition hover:opacity-80"}
+                  title={"Edit"}
+                  href={`/admin/delete/${redirect.id}`}
+                >
                   <Trash2 />
                 </Link>
               </div>
