@@ -23,8 +23,12 @@ export default async function Page() {
           >
             <div className={"min-w-0 flex-1"}>
               <div className={"font-bold"}>
-                <span>https://nyptech-go.vercel.app/</span>
-                <Link className={"truncate underline"} href={redirect.url}>
+                <span>https://go.tes.club/</span>
+                <Link
+                  className={"truncate underline"}
+                  target={"_blank"}
+                  href={redirect.url}
+                >
                   {redirect.id}
                 </Link>
               </div>
