@@ -27,7 +27,11 @@ export async function getAllRedirects() {
   try {
     const keys = await redis.keys("go:*");
     const redirects = await redis.mget<Redirect[]>(keys);
-    return redirects;
+    const records = redirects.map((redirect, index) => ({
+      id: keys[index].replace("go:", ""),
+      ...redirect,
+    }));
+    return records;
   } catch (error) {
     return [];
   }

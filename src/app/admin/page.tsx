@@ -21,10 +21,13 @@ export default async function Page() {
             key={redirect.url}
             className={"px-4 py-2 flex rounded-lg bg-base-200"}
           >
-            <div className={"flex-1"}>
-              <Link className={"underline"} href={redirect.url}>
-                {redirect.url}
-              </Link>
+            <div className={"min-w-0 flex-1"}>
+              <div className={"font-bold"}>
+                <span>https://nyptech-go.vercel.app/</span>
+                <Link className={"truncate underline"} href={redirect.url}>
+                  {redirect.id}
+                </Link>
+              </div>
               <div>{redirect.description}</div>
             </div>
             <div className={"flex-none flex items-center gap-4"}>

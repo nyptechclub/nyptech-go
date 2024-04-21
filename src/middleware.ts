@@ -1,22 +1,18 @@
-import { updateSession } from "@/session";
+import { getSession, updateSession } from "@/session";
 import { NextResponse, type NextRequest } from "next/server";
 
-const protectedRoutes = ["/admin"];
-
-export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
-};
-
 export async function middleware(req: NextRequest) {
-  const session = await updateSession(req);
-
   const path = req.nextUrl.pathname;
-  // const isProtected = protectedRoutes.some((route) => path.startsWith(route));
-  const isProtected = protectedRoutes.includes(path);
+  const session = await getSession();
 
-  if (isProtected && !session) {
-    return NextResponse.redirect(new URL("/admin/login", req.nextUrl));
+  if (path === "/login" && session) {
+    const res = NextResponse.redirect(new URL("/admin", req.nextUrl));
+    return await updateSession(req, res);
   }
 
-  return session;
+  if (path.includes("/admin") && !session) {
+    return NextResponse.redirect(new URL("/login", req.nextUrl));
+  }
+
+  return await updateSession(req);
 }

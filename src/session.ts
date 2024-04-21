@@ -3,6 +3,7 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
+const expirationTime = 10 * 60; // 10 minutes in seconds
 const signingKey = new TextEncoder().encode(EncryptionKey);
 
 // biome-ignore lint/suspicious/noExplicitAny: Can be any type
@@ -10,7 +11,7 @@ export async function encrypt(payload: any) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("10 sec from now")
+    .setExpirationTime(`${expirationTime} seconds from now`)
     .sign(signingKey);
 }
 
@@ -42,19 +43,19 @@ export async function getSession() {
   return await decrypt(session);
 }
 
-export async function updateSession(request: NextRequest) {
-  const session = request.cookies.get("session")?.value;
+export async function updateSession(req: NextRequest, res?: NextResponse) {
+  const session = req.cookies.get("session")?.value;
   if (!session) return;
 
   // Refreshes the current session so it does not expire
   const parsed = await decrypt(session);
-  parsed.expires = new Date(Date.now() + 10 * 1000);
-  const res = NextResponse.next();
-  res.cookies.set({
+  parsed.expires = new Date(Date.now() + expirationTime * 1000);
+  const response = res ?? NextResponse.next();
+  response.cookies.set({
     name: "session",
     value: await encrypt(parsed),
     httpOnly: true,
     expires: parsed.expires,
   });
-  return res;
+  return response;
 }
