@@ -1,18 +1,15 @@
-import Image from "next/image";
-import Link from "next/link";
+/* eslint-disable @next/next/no-img-element */
 
-// TODO: Optimize page for mobile layout
+import Link from "next/link";
 
 export default function Page() {
   return (
     <main className={"h-full flex items-center justify-center"}>
       <div className={"text-center"}>
-        <Image
+        <img
           className={"mb-4 mx-auto"}
-          src={"/assets/icon.png"}
+          src={"https://nyptech.vercel.app/favicon.ico"}
           alt={"Icon"}
-          width={200}
-          height={200}
         />
         <h1 className={"text-3xl font-bold"}>NYP Technopreneurship Club</h1>
         <p className={"mt-4 w-[80%] lg:w-[50%] mx-auto "}>

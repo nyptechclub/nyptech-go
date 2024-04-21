@@ -1,14 +1,12 @@
-import { getSession, login } from "@/session";
+import SubmitButton from "@/components/submit-button";
+import { login } from "@/session";
 import { redirect } from "next/navigation";
 
-export default async function Page() {
-  const session = await getSession();
-
+export default function Page() {
   const handleLogin = async (event: FormData) => {
     "use server";
     const key = event.get("key") as string;
-    const success = await login(key);
-    if (success) {
+    if (await login(key)) {
       redirect("/admin");
     } else {
       // TODO: Alert user that login failed
@@ -16,22 +14,22 @@ export default async function Page() {
   };
 
   return (
-    <main className={"h-full flex items-center justify-center"}>
-      <form
-        className={"px-8 py-12 flex flex-col bg-base-200"}
-        action={handleLogin}
-      >
-        <h1 className={"mb-4 font-bold text-3xl text-center"}>Admin Login</h1>
-        <input
-          className={"input input-bordered"}
-          type="password"
-          name="key"
-          placeholder="Admin Key"
-        />
-        <button className={"mt-4 btn btn-primary"} type="submit">
-          Login
-        </button>
-      </form>
+    <main className={"h-full grid place-items-center"}>
+      <div className={"p-8 rounded-box bg-base-200"}>
+        <form
+          className={"flex flex-col gap-4"}
+          action={handleLogin}
+        >
+          <h1 className={"text-3xl font-bold"}>Admin Dashboard</h1>
+          <input
+            className={"input input-bordered"}
+            type={"password"}
+            name={"key"}
+            placeholder={"Key"}
+          />
+          <SubmitButton className={"btn btn-primary"}>Login</SubmitButton>
+        </form>
+      </div>
     </main>
   );
 }
