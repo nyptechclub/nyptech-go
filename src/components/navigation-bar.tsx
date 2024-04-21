@@ -5,7 +5,7 @@ export default function NavigationBar(params: { className?: string }) {
     <nav className={`navbar bg-base-300 ${params.className}`}>
       <div className={"navbar-start"}>
         <Link className={"btn btn-ghost text-xl"} href={"/"}>
-          TES Club
+          NYP Technopreneurship Club
         </Link>
       </div>
       <div className={"navbar-end"}>
