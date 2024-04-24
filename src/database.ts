@@ -33,7 +33,10 @@ export async function getRedirect(id: string) {
     if (!redirect) {
       return undefined;
     }
-    return redirect;
+    return {
+      id,
+      ...redirect,
+    } as Redirect;
   } catch (error) {
     return undefined;
   }
