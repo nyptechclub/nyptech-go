@@ -5,16 +5,15 @@ import Link from "next/link";
 export default function Page() {
   return (
     <main className={"h-full flex items-center justify-center"}>
-      <div className={"text-center"}>
+      <div className={"w-[90%] text-center"}>
         <img
-          className={"mb-4 mx-auto"}
+          className={"mb-4 size-[200px] mx-auto"}
           src={"https://nyptech.vercel.app/favicon.ico"}
           alt={"Icon"}
         />
-        <h1 className={"text-3xl font-bold"}>NYP Technopreneurship Club</h1>
-        <p className={"mt-4 w-[80%] lg:w-[50%] mx-auto "}>
-          Our mission is to develop an entrepreneurial mindset across the SIT
-          student body through engagements and real-world problem solving with
+        <h1 className={"text-3xl font-bold truncate"}>NYP Technopreneurship Club</h1>
+        <p className={"mt-4 mx-auto"}>
+          Developing an entrepreneurial mindset across the SIT student body with
           the application of technology.
         </p>
         <div className={"mt-6"}>

@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     if (success) {
       redirect("/admin");
     } else {
-      // TODO: Alert user that add failed
+      redirect("/admin/error");
     }
   };
 

@@ -14,7 +14,7 @@ export default function Page() {
     if (success) {
       redirect("/admin");
     } else {
-      // TODO: Alert user that add failed
+      redirect("/admin/error");
     }
   };
 

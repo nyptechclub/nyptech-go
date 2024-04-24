@@ -8,7 +8,7 @@ export default function Page({ params }: { params: { id: string } }) {
     if (await deleteRedirect(params.id)) {
       redirect("/admin");
     } else {
-      // TODO: Alert user that delete failed
+      redirect("/admin/error");
     }
   };
 

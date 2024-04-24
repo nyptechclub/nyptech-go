@@ -11,7 +11,7 @@ export default function SubmitButton(props: {
   if (pending) {
     return (
       <button className={props.className} type={"submit"} disabled>
-        <span className={"loading loading-dots loading-xs"} />
+        <span className={"loading loading-dots loading-sm"} />
       </button>
     );
   }

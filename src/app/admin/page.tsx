@@ -33,7 +33,7 @@ export default async function Page() {
         </ul>
         <ul className={"flex flex-col gap-2"}>
           {redirects.map((redirect) => (
-            <li key={redirect.id} className={"p-4 flex rounded-lg bg-base-200"}>
+            <li key={redirect.id} className={"p-4 flex max-sm:flex-col max-sm:gap-4 rounded-lg bg-base-200"}>
               <div className={"flex-1"}>
                 <div className={"font-bold text-lg"}>
                   <span>https://go.tes.club/</span>
