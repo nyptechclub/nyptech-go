@@ -24,7 +24,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <p>
             <span className={"badge badge-warning badge-lg"}>{params.id}</span>
           </p>
-          <SubmitButton className={"w-fit btn btn-primary"}>
+          <SubmitButton className={"w-fit btn btn-error"}>
             Yes, I&apos;m sure!
           </SubmitButton>
         </form>

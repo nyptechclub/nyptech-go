@@ -18,7 +18,7 @@ export default function Page() {
         >
           <h1 className={"text-3xl font-bold"}>Admin Dashboard</h1>
           <p>Are you sure that you want to logout?</p>
-          <SubmitButton className={"w-fit btn btn-primary"}>
+          <SubmitButton className={"w-fit btn btn-warning"}>
             Yes, I&apos;m sure!
           </SubmitButton>
         </form>

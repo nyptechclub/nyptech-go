@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <main className={"h-full grid place-items-center"}>
-      <div className={"p-8 w-[400px] rounded-box bg-base-200"}>
+      <div className={"p-8 rounded-box bg-base-200"}>
         <form className={"flex flex-col gap-4"} action={handleAdd}>
           <h1 className={"text-3xl text-center font-bold"}>Edit Link</h1>
           <input
@@ -48,7 +48,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             name={"description"}
             defaultValue={data?.description}
           />
-          <SubmitButton className={"btn btn-primary"}>Update</SubmitButton>
+          <SubmitButton className={"btn btn-outline"}>Update</SubmitButton>
         </form>
       </div>
     </main>

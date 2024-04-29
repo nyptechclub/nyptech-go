@@ -53,7 +53,7 @@ export default async function Page() {
                 </Link>
                 <Link
                   className={"transition hover:opacity-80"}
-                  title={"Edit"}
+                  title={"Delete"}
                   href={`/admin/delete/${redirect.id}`}
                 >
                   <Trash2 />
