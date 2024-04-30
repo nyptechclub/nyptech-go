@@ -2,7 +2,7 @@ import { deleteRedirect } from "@/database";
 import { AdminKey } from "@/environment";
 import type { NextRequest } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function DELETE(request: NextRequest) {
   const auth = request.headers.get("Authorization");
 
   if (auth !== `Bearer ${AdminKey}`) {
