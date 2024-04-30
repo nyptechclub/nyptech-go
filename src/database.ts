@@ -17,13 +17,13 @@ export type Redirect = RedirectRecord & {
 
 export async function setRedirect(redirect: Redirect) {
   try {
-    await redis.set(`go:${redirect.id}`, {
+    await redis.set<RedirectRecord>(`go:${redirect.id}`, {
       url: redirect.url,
       description: redirect.description,
     });
-    return true;
+    return getRedirect(redirect.id);
   } catch (error) {
-    return false;
+    return undefined;
   }
 }
 
