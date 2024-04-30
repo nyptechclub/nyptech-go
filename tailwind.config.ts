@@ -7,7 +7,6 @@ const config: Config = {
   ],
   theme: {},
   plugins: [require("daisyui")],
-  prefix: "",
   daisyui: {
     themes: [
       "light",

@@ -16,10 +16,7 @@ export default function Page() {
   return (
     <main className={"h-full grid place-items-center"}>
       <div className={"p-8 rounded-box bg-base-200"}>
-        <form
-          className={"flex flex-col gap-4"}
-          action={handleLogin}
-        >
+        <form className={"flex flex-col gap-4"} action={handleLogin}>
           <h1 className={"text-3xl font-bold"}>Admin Dashboard</h1>
           <input
             className={"input input-bordered"}
