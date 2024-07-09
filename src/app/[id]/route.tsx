@@ -5,7 +5,7 @@ export const revalidate = 0;
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const data = await getRedirect(params.id);
   if (!data) {

@@ -1,12 +1,12 @@
 import { AdminKey, EncryptionKey } from "@/environment";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 const expirationTime = 10 * 60; // 10 minutes in seconds
 const signingKey = new TextEncoder().encode(EncryptionKey);
 
-// biome-ignore lint/suspicious/noExplicitAny: Can be any type
+// biome-ignore lint/suspicious/noExplicitAny:
 export async function encrypt(payload: any) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
@@ -15,7 +15,7 @@ export async function encrypt(payload: any) {
     .sign(signingKey);
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: Can be any type
+// biome-ignore lint/suspicious/noExplicitAny:
 export async function decrypt(input: string): Promise<any> {
   const { payload } = await jwtVerify(input, signingKey, {
     algorithms: ["HS256"],

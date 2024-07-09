@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import Link from "next/link";
 
 export default function Page() {
@@ -12,7 +10,7 @@ export default function Page() {
       >
         <img
           className={"mb-4 size-[200px] mx-auto"}
-          src={"https://nyptech.vercel.app/favicon.ico"}
+          src={"/assets/logo.png"}
           alt={"Icon"}
         />
         <h1 className={"text-2xl font-bold break-words m-5"}>
