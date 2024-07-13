@@ -16,7 +16,7 @@ export default function Page() {
         <h1 className={"text-2xl font-bold break-words m-5"}>
           NYP Technopreneurship Club
         </h1>
-        <p className={"text-base"}>
+        <p className={"mx-auto max-w-[50%] max-lg:max-w-[90%] text-base"}>
           Develop an entrepreneurial mindset across the SIT student body through
           engagements and real-world problem solving with the application of
           technology.
@@ -24,10 +24,10 @@ export default function Page() {
 
         <div className={"mt-6"}>
           <Link
-            className={"btn btn-accent"}
+            className={"btn btn-primary"}
             href={"https://nyptech.vercel.app"}
           >
-            Learn More
+            Learn more!
           </Link>
         </div>
       </div>
