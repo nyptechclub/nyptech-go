@@ -7,7 +7,7 @@ This repository contains the microservice for centralizing links related to the 
 ### Prerequisities
 
 - [Node.js](https://nodejs.org) 20+
-- [PNPM](https://pnpm.io) 9+
+- [pnpm](https://pnpm.io) 9+
 
 ### Instructions
 
