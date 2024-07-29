@@ -6,8 +6,8 @@ export default async function Page() {
   const redirects = await getAllRedirects();
 
   return (
-    <main className={"py-4"}>
-      <div className={"mx-auto w-[90%] flex flex-col gap-4"}>
+    <main>
+      <div>
         <ul
           className={
             "menu menu-vertical sm:menu-horizontal bg-base-200 rounded-box"
