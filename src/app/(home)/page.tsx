@@ -10,7 +10,7 @@ export default function Page() {
       >
         <img
           className={"mb-4 size-[200px] mx-auto"}
-          src={"/assets/logo.png"}
+          src={"https://nyptech.vercel.app/assets?id=logo"}
           alt={"Icon"}
         />
         <h1 className={"text-2xl font-bold break-words m-5"}>

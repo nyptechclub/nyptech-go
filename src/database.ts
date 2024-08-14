@@ -15,13 +15,10 @@ export type Redirect = RedirectRecord & {
   id: string;
 };
 
-export async function setRedirect(redirect: Redirect) {
+export async function setRedirect(id: string, record: RedirectRecord) {
   try {
-    await redis.set<RedirectRecord>(`go:${redirect.id}`, {
-      url: redirect.url,
-      description: redirect.description,
-    });
-    return getRedirect(redirect.id);
+    await redis.set<RedirectRecord>(`go:${id}`, record);
+    return getRedirect(id);
   } catch (error) {
     return undefined;
   }

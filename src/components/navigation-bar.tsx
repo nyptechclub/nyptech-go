@@ -14,7 +14,7 @@ export default function NavigationBar(props: { className?: string }) {
         <Link
           className={"btn btn-ghost"}
           title={"Admin"}
-          href={"http://nyptech-admin.vercel.app/admin/microservices/go"}
+          href={"http://nyptech-admin.vercel.app/microservices/go"}
         >
           <LayoutDashboard />
         </Link>
