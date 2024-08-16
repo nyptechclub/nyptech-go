@@ -6,9 +6,9 @@
 node_modules/
 
 # Output files
-out/
 build/
 dist/
+out/
 
 # Output files: Next.js
 .vercel/
@@ -16,7 +16,6 @@ dist/
 next-env.d.ts
 
 # User-specific files
-.env*
 .env*.local
 
 # Miscellaneous files

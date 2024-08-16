@@ -3,14 +3,14 @@ import { deleteLink, getLink, Redirect, setLink } from "@/lib/database";
 import { RouteProps } from "@/types";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function POST(request: NextRequest, props: RouteProps) {
-  const auth = request.headers.get("Authorization");
+export async function POST(req: NextRequest, props: RouteProps) {
+  const auth = req.headers.get("Authorization");
 
   if (auth !== `Bearer ${ADMIN_KEY}`) {
     return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
   }
 
-  const record = (await request.json()) as Redirect;
+  const record = (await req.json()) as Redirect;
 
   if (!record.url) {
     return NextResponse.json({ message: "Body is invalid." }, { status: 400 });
