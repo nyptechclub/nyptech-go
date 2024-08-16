@@ -1,12 +1,13 @@
-import { getRedirect } from "@/database";
+import { getLink } from "@/lib/database";
+import { RouteProps } from "@/types";
 import { redirect } from "next/navigation";
 
 export const revalidate = 0;
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const data = await getRedirect(params.id);
-  if (!data) {
+export async function GET(req: Request, props: RouteProps) {
+  const link = await getLink(props.params.id);
+  if (!link) {
     return redirect("/");
   }
-  return redirect(data.url);
+  return redirect(link.url);
 }

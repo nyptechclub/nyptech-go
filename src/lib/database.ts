@@ -1,30 +1,30 @@
-import { RedisToken, RedisUrl } from "@/environment";
+import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from "@/environment";
 import { Redis } from "@upstash/redis";
 
 const redis = new Redis({
-  url: RedisUrl,
-  token: RedisToken,
+  url: UPSTASH_REDIS_REST_URL,
+  token: UPSTASH_REDIS_REST_TOKEN,
 });
+
+export type Redirect = RedirectRecord & {
+  id: string;
+};
 
 export type RedirectRecord = {
   url: string;
   description: string;
 };
 
-export type Redirect = RedirectRecord & {
-  id: string;
-};
-
-export async function setRedirect(id: string, record: RedirectRecord) {
+export async function setLink(id: string, record: RedirectRecord) {
   try {
     await redis.set<RedirectRecord>(`go:${id}`, record);
-    return getRedirect(id);
+    return getLink(id);
   } catch (error) {
     return undefined;
   }
 }
 
-export async function getRedirect(id: string) {
+export async function getLink(id: string) {
   try {
     const redirect = await redis.get<RedirectRecord>(`go:${id}`);
     if (!redirect) {
@@ -39,7 +39,7 @@ export async function getRedirect(id: string) {
   }
 }
 
-export async function getAllRedirects() {
+export async function getLinks() {
   try {
     const keys = await redis.keys("go:*");
     const redirects = await redis.mget<RedirectRecord[]>(keys);
@@ -53,7 +53,7 @@ export async function getAllRedirects() {
   }
 }
 
-export async function deleteRedirect(id: string) {
+export async function deleteLink(id: string) {
   try {
     await redis.del(`go:${id}`);
     return true;
