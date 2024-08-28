@@ -16,6 +16,7 @@ out/
 next-env.d.ts
 
 # User-specific files
+.env
 .env*.local
 
 # Miscellaneous files
