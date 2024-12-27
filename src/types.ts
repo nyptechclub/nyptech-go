@@ -1,4 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+export type LayoutProps = Readonly<{
+  children: React.ReactNode;
+}>;
+
 export type RouteProps = {
-  params: { [key: string]: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<any>;
+  searchParams: Promise<any>;
+};
+
+export type ErrorRouteProps = {
+  error: Error & { digest?: string };
+  reset: () => void;
 };
