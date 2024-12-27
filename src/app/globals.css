@@ -3,11 +3,8 @@
 @tailwind utilities;
 
 @layer base {
+  html,
   body {
     @apply h-dvh w-dvw;
-  }
-
-  main {
-    @apply size-full;
   }
 }
