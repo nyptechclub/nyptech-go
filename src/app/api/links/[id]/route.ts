@@ -1,4 +1,4 @@
-import { getLink } from "@/lib/utils";
+import { deleteLink, getLink } from "@/lib/utils";
 import { RouteProps } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,7 +16,8 @@ export async function DELETE(_: NextRequest, props: RouteProps) {
   const params = await props.params;
   const id = params.id;
 
-  // TODO
+  const success = await deleteLink(id);
 
-  return NextResponse.error();
+  if (!success) return NextResponse.json({}, { status: 404 });
+  return NextResponse.json({ id });
 }
