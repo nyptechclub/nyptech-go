@@ -1,4 +1,4 @@
-import { getLinks } from "@/lib/utils";
+import { getLinks } from "@/lib/links";
 import { PencilRulerIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 

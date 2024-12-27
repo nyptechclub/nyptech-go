@@ -1,31 +1,29 @@
-import { uploadthing } from "@/lib/integrations/uploadthing";
-import { deleteFileLink, getFileLink } from "@/lib/utils";
+import { deleteFile, retrieveFile } from "@/lib/files";
 import { RouteProps } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_: NextRequest, props: RouteProps) {
   const { id } = await props.params;
 
-  const url = await getFileLink(id);
-
-  if (!url) return NextResponse.json({}, { status: 404 });
-  return NextResponse.json({ id, url });
+  try {
+    const data = await retrieveFile(id);
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error(error);
+    if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.error();
+  }
 }
 
 export async function DELETE(_: NextRequest, props: RouteProps) {
   const { id } = await props.params;
 
-  // Get the file link from cache
-  const url = await getFileLink(id);
-  if (!url) return NextResponse.json({}, { status: 404 });
-
-  // Delete the file from storage
-  const { success: fileDeleted } = await uploadthing.deleteFiles(url.split("/").slice(-1), { keyType: "fileKey" });
-  if (!fileDeleted) return NextResponse.error();
-
-  // Delete the file link from cache
-  const linkDeleted = await deleteFileLink(id);
-  if (!linkDeleted) return NextResponse.error();
-
-  return NextResponse.json({ id });
+  try {
+    await deleteFile(id);
+    return NextResponse.json({ message: "File deleted." });
+  } catch (error) {
+    console.error(error);
+    if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.error();
+  }
 }

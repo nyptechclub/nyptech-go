@@ -1,6 +1,7 @@
 "use client";
 
 import LoadingPage from "@/app/(pages)/loading";
+import { linkSchema } from "@/lib/links";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -41,6 +42,9 @@ export default function Page() {
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
         return res.json();
+      })
+      .then((data) => {
+        return linkSchema.parse(data);
       })
       .then((data) => {
         form.reset(data);

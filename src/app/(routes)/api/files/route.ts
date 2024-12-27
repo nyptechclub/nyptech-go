@@ -1,5 +1,4 @@
-import { uploadthing } from "@/lib/integrations/uploadthing";
-import { setFileLink } from "@/lib/utils";
+import { uploadFile } from "@/lib/files";
 import { NextRequest, NextResponse } from "next/server";
 import { zfd } from "zod-form-data";
 
@@ -9,17 +8,13 @@ const schema = zfd.formData({
 });
 
 export async function POST(req: NextRequest) {
-  const formData = await req.formData();
-  const { id, file } = schema.parse(formData);
+  const { id, file } = schema.parse(await req.formData());
 
-  const res = await uploadthing.uploadFiles(file);
-  if (res.error || !res.data) return NextResponse.error();
-
-  const success = setFileLink(id, res.data.url);
-
-  if (!success) return NextResponse.error();
-  return NextResponse.json({
-    id,
-    url: res.data.url,
-  });
+  try {
+    const data = await uploadFile(id, file);
+    return NextResponse.json(data);
+  } catch (error) {
+    if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.error();
+  }
 }

@@ -1,12 +1,14 @@
-import { getFileLink } from "@/lib/utils";
+import { retrieveFile } from "@/lib/files";
 import { RouteProps } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_: NextRequest, props: RouteProps) {
   const { id } = await props.params;
 
-  const url = await getFileLink(id);
-  if (!url) return NextResponse.redirect("https://nyptech.club");
-
-  return NextResponse.redirect(url);
+  try {
+    const file = await retrieveFile(id);
+    return NextResponse.redirect(file.url);
+  } catch {
+    return NextResponse.redirect("https://nyptech.club");
+  }
 }
