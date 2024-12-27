@@ -14,8 +14,8 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
 
   const schema = z.object({
-    id: z.string(),
-    url: z.string().url(),
+    id: z.string().nonempty(),
+    url: z.string().url().nonempty(),
   });
 
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
@@ -67,12 +67,22 @@ export default function Page() {
                 <div className={"label-text"}>ID</div>
               </div>
               <input {...form.register("id")} className={"input input-bordered"} disabled />
+              {form.formState.errors.id && (
+                <div className={"label"}>
+                  <div className={"label-text-alt text-error"}>{form.formState.errors.id.message}</div>
+                </div>
+              )}
             </label>
             <label className={"form-control"}>
               <div className={"label"}>
                 <div className={"label-text"}>URL</div>
               </div>
               <input {...form.register("url")} className={"input input-bordered"} />
+              {form.formState.errors.url && (
+                <div className={"label"}>
+                  <div className={"label-text-alt text-error"}>{form.formState.errors.url.message}</div>
+                </div>
+              )}
             </label>
           </form>
           <div className={"card-actions mt-2 justify-end"}>

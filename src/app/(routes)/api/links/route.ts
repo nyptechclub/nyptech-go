@@ -1,4 +1,4 @@
-import { createLink } from "@/lib/links";
+import { createLink, getLinks } from "@/lib/links";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -12,6 +12,16 @@ export async function POST(req: NextRequest) {
 
   try {
     const data = await createLink(id, url);
+    return NextResponse.json(data);
+  } catch (error) {
+    if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.error();
+  }
+}
+
+export async function GET() {
+  try {
+    const data = await getLinks();
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
