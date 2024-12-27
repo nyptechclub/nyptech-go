@@ -1,5 +1,6 @@
 import { LayoutProps } from "@/types";
 import { Protect, UserButton } from "@clerk/nextjs";
+import Image from "next/image";
 import Link from "next/link";
 
 function ProtectedPage() {
@@ -18,11 +19,11 @@ function ProtectedPage() {
 export default function Layout(props: LayoutProps) {
   return (
     <Protect fallback={ProtectedPage()}>
-      <div className={"size-full grid grid-rows-[auto,1fr]"}>
+      <div className={"grid size-full grid-rows-[auto,1fr]"}>
         <nav className={"navbar bg-base-300"}>
           <div className={"flex-1"}>
-            <Link className={"btn btn-ghost"} href={"/"}>
-              <h1 className={"text-xl font-bold"}>Logo</h1>
+            <Link className={"btn btn-square btn-ghost"} href={"/"}>
+              <Image src={"/logo.png"} alt={"Logo"} width={32} height={32} />
             </Link>
           </div>
           <div>

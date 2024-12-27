@@ -45,7 +45,7 @@ export default function Page() {
         <div key={link.id} className={"flex rounded-box bg-base-300 p-4"}>
           <div className={"flex-1"}>
             <h2 className={"text-lg font-bold"}>{link.id}</h2>
-            <p className={"text-sm"}>{link.url}</p>
+            <p className={"line-clamp-1 text-sm"}>{link.url}</p>
           </div>
           <div className={"flex items-center gap-2"}>
             <div className={"tooltip"} data-tip={"Copy"}>
