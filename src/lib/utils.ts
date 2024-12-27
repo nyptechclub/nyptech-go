@@ -1,12 +1,13 @@
 import { redis } from "@/lib/integrations/redis";
 import { z } from "zod";
 
-const PARENT_KEY = "go2";
+const PARENT_KEY = "go-links";
 const FILES_PARENT_KEY = "go-files";
 
-const LinkSchema = z.object({
+export const linkSchema = z.object({
   id: z.string(),
-  url: z.string(),
+  url: z.string().url(),
+  clicks: z.number().int().nullable().default(0),
 });
 
 export function setLink(id: string, url: string) {
@@ -22,8 +23,11 @@ export function getLinks() {
     // Get unique IDs of links
     const ids = [...new Set(keys.map((key) => key.replace(`${PARENT_KEY}:`, "").split(":")[0]))];
 
+    // Return empty array if no links found
+    if (!ids.length) return [];
+
     // Get all fields of the schema except ID
-    const fields = Object.keys(LinkSchema.shape).filter((key) => key !== "id");
+    const fields = Object.keys(linkSchema.shape).filter((key) => key !== "id");
 
     // Get values of all links
     const values = await redis.mget<string[]>(
@@ -41,7 +45,7 @@ export function getLinks() {
       });
 
       // Parse values to schema
-      return LinkSchema.parse(link);
+      return linkSchema.parse(link);
     });
   });
 }

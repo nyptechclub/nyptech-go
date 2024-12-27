@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function ProtectedPage() {
   return (
-    <main className={"grid size-full place-items-center"}>
+    <main className={"grid place-items-center"}>
       <div className={"card bg-base-300"}>
         <div className={"card-body items-center"}>
           <h1 className={"card-title"}>Oops!</h1>
@@ -18,7 +18,7 @@ function ProtectedPage() {
 export default function Layout(props: LayoutProps) {
   return (
     <Protect fallback={ProtectedPage()}>
-      <div className={"grid grid-rows-[auto,1fr]"}>
+      <div className={"size-full grid grid-rows-[auto,1fr]"}>
         <nav className={"navbar bg-base-300"}>
           <div className={"flex-1"}>
             <Link className={"btn btn-ghost"} href={"/"}>
@@ -31,8 +31,8 @@ export default function Layout(props: LayoutProps) {
             </div>
           </div>
         </nav>
+        {props.children}
       </div>
-      {props.children}
     </Protect>
   );
 }
