@@ -1,11 +1,12 @@
 import { getLinks } from "@/lib/utils";
+import { PencilRulerIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page() {
   const links = await getLinks();
   return (
     <main className={"flex flex-col gap-2 p-4"}>
-      <Link className={"btn btn-success"} href={"/manage/new"}>
+      <Link className={"btn btn-info"} href={"/manage/new"}>
         New Link
       </Link>
       {links.map((link) => (
@@ -15,12 +16,16 @@ export default async function Page() {
             <p className={"text-sm"}>{link.url}</p>
           </div>
           <div className={"flex items-center gap-2"}>
-            <Link className={"btn btn-info btn-sm"} href={`/manage/${link.id}`}>
-              Manage
-            </Link>
-            <Link className={"btn btn-error btn-sm"} href={`/manage/${link.id}/delete`}>
-              Delete
-            </Link>
+            <div className={"tooltip"} data-tip={"Manage"}>
+              <Link className={"btn btn-square btn-info"} href={`/manage/${link.id}`}>
+                <PencilRulerIcon />
+              </Link>
+            </div>
+            <div className={"tooltip"} data-tip={"Delete"}>
+              <Link className={"btn btn-square btn-error"} href={`/manage/${link.id}/delete`}>
+                <TrashIcon />
+              </Link>
+            </div>
           </div>
         </div>
       ))}

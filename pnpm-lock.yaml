@@ -26,6 +26,9 @@ importers:
       daisyui:
         specifier: ^4.12.23
         version: 4.12.23(postcss@8.4.49)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@19.0.0)
       next:
         specifier: 15.1.2
         version: 15.1.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1280,6 +1283,11 @@ packages:
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
+
+  lucide-react@0.469.0:
+    resolution: {integrity: sha512-28vvUnnKQ/dBwiCQtwJw7QauYnE7yd2Cyp4tTTJpvglX4EMpbflcdBgrgToX2j71B3YvugK/NH3BGUk+E/p/Fw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   map-obj@4.3.0:
     resolution: {integrity: sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==}
@@ -3307,6 +3315,10 @@ snapshots:
       tslib: 2.4.1
 
   lru-cache@10.4.3: {}
+
+  lucide-react@0.469.0(react@19.0.0):
+    dependencies:
+      react: 19.0.0
 
   map-obj@4.3.0: {}
 

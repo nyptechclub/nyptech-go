@@ -18,6 +18,10 @@ export function getLink(id: string) {
   return redis.get<string>(`${PARENT_KEY}:${id}:url`);
 }
 
+export function incrementLinkClicks(id: string) {
+  return redis.incr(`${PARENT_KEY}:${id}:clicks`).then((clicks) => clicks);
+}
+
 export function getLinks() {
   return redis.keys(`${PARENT_KEY}:*`).then(async (keys) => {
     // Get unique IDs of links

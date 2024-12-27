@@ -1,14 +1,16 @@
 "use client";
 
+import LoadingPage from "@/app/(pages)/loading";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function Page() {
   const params = useParams();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   const schema = z.object({
     id: z.string(),
@@ -34,6 +36,7 @@ export default function Page() {
   }
 
   useEffect(() => {
+    setLoading(true);
     fetch(`/api/links/${params.id}`)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
@@ -41,8 +44,13 @@ export default function Page() {
       })
       .then((data) => {
         form.reset(data);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
+
+  if (loading) return <LoadingPage />;
 
   return (
     <main className={"grid place-items-center"}>
@@ -64,11 +72,7 @@ export default function Page() {
             </label>
           </form>
           <div className={"card-actions mt-2 justify-end"}>
-            <button
-              className={"btn btn-outline btn-sm"}
-              disabled={form.formState.isSubmitting}
-              onClick={onCancel}
-            >
+            <button className={"btn btn-outline btn-sm"} disabled={form.formState.isSubmitting} onClick={onCancel}>
               Cancel
             </button>
             <button
