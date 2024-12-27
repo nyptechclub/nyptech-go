@@ -4,8 +4,7 @@ import { RouteProps } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_: NextRequest, props: RouteProps) {
-  const params = await props.params;
-  const id = params.id;
+  const { id } = await props.params;
 
   const url = await getFileLink(id);
 
@@ -14,8 +13,7 @@ export async function GET(_: NextRequest, props: RouteProps) {
 }
 
 export async function DELETE(_: NextRequest, props: RouteProps) {
-  const params = await props.params;
-  const id = params.id;
+  const { id } = await props.params;
 
   // Get the file link from cache
   const url = await getFileLink(id);

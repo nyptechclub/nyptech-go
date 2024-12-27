@@ -3,8 +3,7 @@ import { RouteProps } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_: NextRequest, props: RouteProps) {
-  const params = await props.params;
-  const id = params.id;
+  const { id } = await props.params;
 
   const url = await getLink(id);
 
@@ -13,8 +12,7 @@ export async function GET(_: NextRequest, props: RouteProps) {
 }
 
 export async function DELETE(_: NextRequest, props: RouteProps) {
-  const params = await props.params;
-  const id = params.id;
+  const { id } = await props.params;
 
   const success = await deleteLink(id);
 

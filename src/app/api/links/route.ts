@@ -8,8 +8,7 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { id, url } = schema.parse(body);
+  const { id, url } = schema.parse(await req.json());
 
   const success = setLink(id, url);
 
