@@ -17,7 +17,6 @@ export async function uploadFile(id: string, file: File) {
   const fileRes = await redis
     .mset({
       [`${PARENT_KEY}:${id}:key`]: uploadRes.data.key,
-      [`${PARENT_KEY}:${id}:type`]: uploadRes.data.type,
       [`${PARENT_KEY}:${id}:hash`]: uploadRes.data.fileHash,
       [`${PARENT_KEY}:${id}:url`]: uploadRes.data.url,
     })
