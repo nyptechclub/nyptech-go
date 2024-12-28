@@ -9,14 +9,9 @@ export const linkSchema = z.object({
   clicks: z.number().int().nullable().default(0),
 });
 
-export async function checkLink(id: string) {
-  const linkExists = await redis.exists(`${PARENT_KEY}:${id}:url`);
-  return linkExists === 1;
-}
-
 export async function createLink(id: string, url: string) {
   // Check if link already exists in cache
-  const linkExists = await checkLink(id);
+  const linkExists = await checkLinkExists(id);
   if (linkExists) throw new Error("A link with the ID already exists.");
 
   // Store link information in cache
@@ -85,17 +80,30 @@ export function getLinks() {
   });
 }
 
-export function updateLink(id: string, url: string) {
+export async function updateLink(id: string, url: string) {
+  // Check if link exists in cache
+  const linkExists = await checkLinkExists(id);
+  if (linkExists) throw new Error("A link with the ID does not exist.");
+
   return redis.set(`${PARENT_KEY}:${id}:url`, url).then((res) => {
     if (res !== "OK") throw new Error("Failed to update link in cache.");
     return getLink(id);
   });
 }
 
-export function deleteLink(id: string) {
+export async function deleteLink(id: string) {
+  // Check if link exists in cache
+  const linkExists = await checkLinkExists(id);
+  if (linkExists) throw new Error("A link with the ID does not exist.");
+
   return redis.keys(`${PARENT_KEY}:${id}:*`).then((keys) => {
     return redis.del(...keys);
   });
+}
+
+export async function checkLinkExists(id: string) {
+  const linkExists = await redis.exists(`${PARENT_KEY}:${id}:url`);
+  return linkExists === 1;
 }
 
 export function incrementLinkClicks(id: string) {

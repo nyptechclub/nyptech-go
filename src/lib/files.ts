@@ -12,14 +12,9 @@ export const fileSchema = z.object({
   url: z.string().url(),
 });
 
-export async function checkFile(id: string) {
-  const fileExists = await redis.exists(`${PARENT_KEY}:${id}:key`);
-  return fileExists === 1;
-}
-
 export async function uploadFile(id: string, file: File) {
   // Check if file already exists
-  const fileExists = await checkFile(id);
+  const fileExists = await checkFileExists(id);
   if (fileExists) throw new Error("A file with the ID already exists.");
 
   // Upload file to storage
@@ -47,6 +42,10 @@ export async function uploadFile(id: string, file: File) {
 }
 
 export async function retrieveFile(id: string) {
+  // Check if link exists in cache
+  const fileExists = await checkFileExists(id);
+  if (fileExists) throw new Error("A file with the ID does not exist.");
+
   // Get all fields of schema except ID
   const fields = Object.keys(fileSchema.shape).filter((key) => key !== "id");
 
@@ -54,8 +53,10 @@ export async function retrieveFile(id: string) {
   const values = await redis.mget<string[]>(fields.map((field) => `${PARENT_KEY}:${id}:${field}`));
   if (!values) throw new Error("Failed to get file in cache.");
 
-  // Map values to fields
+  // Create a file object with ID
   const file: Record<string, string> = { id };
+
+  // Map values to object
   fields.forEach((field, index) => {
     file[field] = values[index];
   });
@@ -76,4 +77,9 @@ export async function deleteFile(id: string) {
   redis.keys(`${PARENT_KEY}:${id}:*`).then((keys) => {
     return redis.del(...keys);
   });
+}
+
+export async function checkFileExists(id: string) {
+  const fileExists = await redis.exists(`${PARENT_KEY}:${id}:key`);
+  return fileExists === 1;
 }
