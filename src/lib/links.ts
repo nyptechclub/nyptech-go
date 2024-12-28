@@ -1,13 +1,7 @@
 import { redis } from "@/lib/integrations/redis";
-import { z } from "zod";
+import { linkSchema } from "@/lib/schema";
 
 const PARENT_KEY = "go-links";
-
-export const linkSchema = z.object({
-  id: z.string(),
-  url: z.string().url(),
-  clicks: z.number().int().nullable().default(0),
-});
 
 export async function createLink(id: string, url: string) {
   // Check if link already exists in cache
@@ -48,42 +42,41 @@ export async function getLink(id: string) {
   return linkSchema.parse(link);
 }
 
-export function getLinks() {
-  return redis.keys(`${PARENT_KEY}:*`).then(async (keys) => {
-    // Get unique IDs of links
-    const ids = [...new Set(keys.map((key) => key.replace(`${PARENT_KEY}:`, "").split(":")[0]))];
+export async function getAllLinks() {
+  // Get all keys for links
+  const keys = await redis.keys(`${PARENT_KEY}:*:url`);
 
-    // Return empty array if no links found
-    if (!ids.length) return [];
+  // Get unique IDs of links
+  const ids = [...new Set(keys.map((key) => key.replace(`${PARENT_KEY}:`, "").split(":")[0]))];
 
-    // Get all fields of the schema except ID
-    const fields = Object.keys(linkSchema.shape).filter((key) => key !== "id");
+  // Return empty array if no links found
+  if (!ids.length) return [];
 
-    // Get values of all links
-    const values = await redis.mget<string[]>(
-      ids.flatMap((id) => fields.map((field) => `${PARENT_KEY}:${id}:${field}`)),
-    );
+  // Get all fields of the schema except ID
+  const fields = Object.keys(linkSchema.shape).filter((key) => key !== "id");
 
-    // Map values to schema
-    return ids.map((id, index) => {
-      // Create a link object with ID
-      const link: Record<string, string> = { id };
+  // Get values of all links
+  const values = await redis.mget<string[]>(ids.flatMap((id) => fields.map((field) => `${PARENT_KEY}:${id}:${field}`)));
 
-      // Map values to fields
-      fields.forEach((field, fieldIndex) => {
-        link[field] = values[index * fields.length + fieldIndex];
-      });
+  // Map values to schema
+  return ids.map((id, index) => {
+    // Create a link object with ID
+    const link: Record<string, string> = { id };
 
-      // Parse values to schema
-      return linkSchema.parse(link);
+    // Map values to fields
+    fields.forEach((field, fieldIndex) => {
+      link[field] = values[index * fields.length + fieldIndex];
     });
+
+    // Parse values to schema
+    return linkSchema.parse(link);
   });
 }
 
 export async function updateLink(id: string, url: string) {
   // Check if link exists in cache
   const linkExists = await checkLinkExists(id);
-  if (linkExists) throw new Error("A link with the ID does not exist.");
+  if (!linkExists) throw new Error("A link with the ID does not exist.");
 
   return redis.set(`${PARENT_KEY}:${id}:url`, url).then((res) => {
     if (res !== "OK") throw new Error("Failed to update link in cache.");
@@ -94,7 +87,7 @@ export async function updateLink(id: string, url: string) {
 export async function deleteLink(id: string) {
   // Check if link exists in cache
   const linkExists = await checkLinkExists(id);
-  if (linkExists) throw new Error("A link with the ID does not exist.");
+  if (!linkExists) throw new Error("A link with the ID does not exist.");
 
   return redis.keys(`${PARENT_KEY}:${id}:*`).then((keys) => {
     return redis.del(...keys);

@@ -22,24 +22,24 @@ export default function Page() {
       return;
     }
 
-    return fetch(`/api/links/${params.id}`, {
+    return fetch(`/api/files/${params.id}`, {
       method: "DELETE",
     }).then(() => {
-      router.push("/manage");
+      router.push("/manage/files");
     });
   }
 
   function onCancel() {
-    router.push("/manage");
+    router.push("/manage/files");
   }
 
   return (
     <main className={"grid place-items-center"}>
       <div className={"card w-[400px] bg-base-300"}>
         <div className={"card-body"}>
-          <h2 className={"card-title self-center"}>Delete Link</h2>
+          <h2 className={"card-title self-center"}>Delete File</h2>
           <form id={"form"} onSubmit={form.handleSubmit(onSubmit)}>
-            <p>Are you sure that you want to delete this link? To confirm, please enter the ID of the link below.</p>
+            <p>Are you sure that you want to delete this file? To confirm, please enter the ID of the file below.</p>
             <p className={"my-2 text-center"}>
               <span className={"text-lg font-bold"}>{params.id}</span>
             </p>
@@ -51,7 +51,7 @@ export default function Page() {
                   <div className={"label"}>
                     <div className={"label-text"}>Confirmation ID</div>
                   </div>
-                  <input {...field} className={"input input-bordered"} />
+                  <input {...field} className={"input input-bordered"} disabled={form.formState.isSubmitting} />
                 </label>
               )}
             />

@@ -8,7 +8,8 @@ export async function GET(_: NextRequest, props: RouteProps) {
   try {
     const file = await retrieveFile(id);
     return NextResponse.redirect(file.url);
-  } catch {
+  } catch (error) {
+    console.error(error);
     return NextResponse.redirect("https://nyptech.club");
   }
 }

@@ -9,7 +9,8 @@ export async function GET(_: NextRequest, props: RouteProps) {
     const link = await getLink(id);
     await incrementLinkClicks(id);
     return NextResponse.redirect(link.url);
-  } catch {
+  } catch (error) {
+    console.error(error);
     return NextResponse.redirect("https://nyptech.club");
   }
 }

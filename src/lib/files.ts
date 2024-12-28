@@ -1,16 +1,8 @@
 import { redis } from "@/lib/integrations/redis";
 import { uploadthing } from "@/lib/integrations/uploadthing";
-import { z } from "zod";
+import { fileSchema } from "@/lib/schema";
 
 const PARENT_KEY = "go-files";
-
-export const fileSchema = z.object({
-  id: z.string(),
-  key: z.string(),
-  type: z.string(),
-  hash: z.string(),
-  url: z.string().url(),
-});
 
 export async function uploadFile(id: string, file: File) {
   // Check if file already exists
@@ -44,7 +36,7 @@ export async function uploadFile(id: string, file: File) {
 export async function retrieveFile(id: string) {
   // Check if link exists in cache
   const fileExists = await checkFileExists(id);
-  if (fileExists) throw new Error("A file with the ID does not exist.");
+  if (!fileExists) throw new Error("A file with the ID does not exist.");
 
   // Get all fields of schema except ID
   const fields = Object.keys(fileSchema.shape).filter((key) => key !== "id");
@@ -63,6 +55,37 @@ export async function retrieveFile(id: string) {
 
   // Parse and return file
   return fileSchema.parse(file);
+}
+
+export async function retrieveAllFiles() {
+  // Get all keys for files
+  const keys = await redis.keys(`${PARENT_KEY}:*:key`);
+
+  // Get unique IDs of files
+  const ids = [...new Set(keys.map((key) => key.replace(`${PARENT_KEY}:`, "").split(":")[0]))];
+
+  // Return empty array if no files found
+  if (!ids.length) return [];
+
+  // Get all fields of the schema except ID
+  const fields = Object.keys(fileSchema.shape).filter((key) => key !== "id");
+
+  // Get values of all files
+  const values = await redis.mget<string[]>(ids.flatMap((id) => fields.map((field) => `${PARENT_KEY}:${id}:${field}`)));
+
+  // Map values to schema
+  return ids.map((id, index) => {
+    // Create a file object with ID
+    const link: Record<string, string> = { id };
+
+    // Map values to fields
+    fields.forEach((field, fieldIndex) => {
+      link[field] = values[index * fields.length + fieldIndex];
+    });
+
+    // Parse values to schema
+    return fileSchema.parse(link);
+  });
 }
 
 export async function deleteFile(id: string) {

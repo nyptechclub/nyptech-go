@@ -1,4 +1,4 @@
-import { uploadFile } from "@/lib/files";
+import { retrieveAllFiles, uploadFile } from "@/lib/files";
 import { NextRequest, NextResponse } from "next/server";
 import { zfd } from "zod-form-data";
 
@@ -14,6 +14,18 @@ export async function POST(req: NextRequest) {
     const data = await uploadFile(id, file);
     return NextResponse.json(data);
   } catch (error) {
+    console.error(error);
+    if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.error();
+  }
+}
+
+export async function GET() {
+  try {
+    const data = await retrieveAllFiles();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error(error);
     if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.error();
   }

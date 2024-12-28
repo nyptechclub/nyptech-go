@@ -1,4 +1,4 @@
-import { createLink, getLinks } from "@/lib/links";
+import { createLink, getAllLinks } from "@/lib/links";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
-    const data = await getLinks();
+    const data = await getAllLinks();
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });

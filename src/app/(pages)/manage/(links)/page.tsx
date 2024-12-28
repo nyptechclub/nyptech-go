@@ -1,15 +1,14 @@
 "use client";
 
 import LoadingPage from "@/app/(pages)/loading";
-import { linkSchema } from "@/lib/links";
+import { LinkInfo, linkSchema } from "@/lib/schema";
 import { CopyIcon, PencilRulerIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { z } from "zod";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
-  const [links, setLinks] = useState<z.infer<typeof linkSchema>[]>([]);
+  const [links, setLinks] = useState<LinkInfo[]>([]);
 
   function copyLink(id: string) {
     navigator.clipboard.writeText(`https://go.nyptech.club/${id}`);

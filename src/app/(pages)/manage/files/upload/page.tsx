@@ -10,33 +10,34 @@ export default function Page() {
 
   const schema = z.object({
     id: z.string().nonempty(),
-    url: z.string().url().nonempty(),
+    file: z.any().refine((file) => file instanceof File, "A file is required."),
   });
 
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
 
   function onSubmit(values: z.infer<typeof schema>) {
-    return fetch("/api/links", {
+    return fetch("/api/files", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: values.id,
-        url: values.url,
-      }),
+      body: (() => {
+        const formData = new FormData();
+        formData.append("id", values.id);
+        formData.append("file", values.file);
+        return formData;
+      })(),
     }).then(() => {
-      router.push("/manage");
+      router.push("/manage/files");
     });
   }
 
   function onCancel() {
-    router.push("/manage");
+    router.push("/manage/files");
   }
 
   return (
     <main className={"grid place-items-center"}>
       <div className={"card w-[400px] bg-base-300"}>
         <div className={"card-body"}>
-          <h2 className={"card-title self-center"}>Create Link</h2>
+          <h2 className={"card-title self-center"}>Upload File</h2>
           <form id={"form"} onSubmit={form.handleSubmit(onSubmit)}>
             <Controller
               control={form.control}
@@ -57,13 +58,20 @@ export default function Page() {
             />
             <Controller
               control={form.control}
-              name={"url"}
+              name={"file"}
               render={({ field, fieldState }) => (
                 <label className={"form-control"}>
                   <div className={"label"}>
-                    <div className={"label-text"}>URL</div>
+                    <div className={"label-text"}>File</div>
                   </div>
-                  <input {...field} className={"input input-bordered"} disabled={form.formState.isSubmitting} />
+                  <input
+                    className={"file-input file-input-bordered"}
+                    type={"file"}
+                    disabled={form.formState.isSubmitting}
+                    onChange={(e) => {
+                      if (e.target.files) field.onChange({ target: { value: e.target.files[0], name: field.name } });
+                    }}
+                  />
                   {fieldState.error?.message && (
                     <div className={"label"}>
                       <div className={"label-text-alt text-error"}>{fieldState.error.message}</div>
@@ -83,7 +91,7 @@ export default function Page() {
               disabled={form.formState.isSubmitting}
               type={"submit"}
             >
-              {form.formState.isSubmitting ? "Creating..." : "Create"}
+              {form.formState.isSubmitting ? "Uploading..." : "Upload"}
             </button>
           </div>
         </div>
