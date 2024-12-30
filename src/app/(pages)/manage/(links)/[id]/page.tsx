@@ -1,8 +1,10 @@
 "use client";
 
 import LoadingPage from "@/app/(pages)/loading";
+import { updateLink } from "@/lib/links";
 import { linkSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { OctagonMinusIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -21,16 +23,13 @@ export default function Page() {
 
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
 
-  function onSubmit(values: z.infer<typeof schema>) {
-    return fetch(`/api/links/${params.id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        url: values.url,
-      }),
-    }).then(() => {
+  async function onSubmit(values: z.infer<typeof schema>) {
+    try {
+      await updateLink(params.id as string, values.url);
       router.push("/manage");
-    });
+    } catch (error) {
+      if (error instanceof Error) form.setError("root", { message: `An error had occurred. ${error.message}` });
+    }
   }
 
   function onCancel() {
@@ -64,9 +63,15 @@ export default function Page() {
   return (
     <main className={"grid place-items-center"}>
       <div className={"card w-[400px] bg-base-300"}>
-        <div className={"card-body"}>
+        <div className={"card-body gap-4"}>
           <h2 className={"card-title self-center"}>Manage Link</h2>
-          <form id={"form"} onSubmit={form.handleSubmit(onSubmit)}>
+          <form id={"form"} className={"space-y-2"} onSubmit={form.handleSubmit(onSubmit)}>
+            {form.formState.errors.root?.message && (
+              <div className={"alert alert-error"} role={"alert"}>
+                <OctagonMinusIcon className={"size-6"} />
+                <span>{form.formState.errors.root.message}</span>
+              </div>
+            )}
             <Controller
               control={form.control}
               name={"id"}

@@ -1,3 +1,5 @@
+"use server";
+
 import { redis } from "@/lib/integrations/redis";
 import { uploadthing } from "@/lib/integrations/uploadthing";
 import { fileSchema } from "@/lib/schema";

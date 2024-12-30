@@ -1,6 +1,8 @@
 "use client";
 
+import { checkLinkExists, createLink } from "@/lib/links";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { OctagonMinusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,17 +17,21 @@ export default function Page() {
 
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
 
-  function onSubmit(values: z.infer<typeof schema>) {
-    return fetch("/api/links", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: values.id,
-        url: values.url,
-      }),
-    }).then(() => {
+  async function onSubmit(values: z.infer<typeof schema>) {
+    try {
+      // Check if the link ID already exists
+      const exists = await checkLinkExists(values.id);
+      if (exists) {
+        form.setError("id", { message: "ID is already in use." });
+        return;
+      }
+
+      // Create the link
+      await createLink(values.id, values.url);
       router.push("/manage");
-    });
+    } catch (error) {
+      if (error instanceof Error) form.setError("root", { message: `An error had occurred. ${error.message}` });
+    }
   }
 
   function onCancel() {
@@ -35,9 +41,15 @@ export default function Page() {
   return (
     <main className={"grid place-items-center"}>
       <div className={"card w-[400px] bg-base-300"}>
-        <div className={"card-body"}>
+        <div className={"card-body gap-4"}>
           <h2 className={"card-title self-center"}>Create Link</h2>
-          <form id={"form"} onSubmit={form.handleSubmit(onSubmit)}>
+          <form id={"form"} className={"space-y-2"} onSubmit={form.handleSubmit(onSubmit)}>
+            {form.formState.errors.root?.message && (
+              <div className={"alert alert-error"} role={"alert"}>
+                <OctagonMinusIcon className={"size-6"} />
+                <span>{form.formState.errors.root.message}</span>
+              </div>
+            )}
             <Controller
               control={form.control}
               name={"id"}

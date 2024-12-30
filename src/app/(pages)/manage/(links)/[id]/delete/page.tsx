@@ -1,6 +1,8 @@
 "use client";
 
+import { deleteLink } from "@/lib/links";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { OctagonMinusIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,23 +12,23 @@ export default function Page() {
   const router = useRouter();
 
   const schema = z.object({
-    id: z.string(),
+    id: z.string().nonempty("Please enter the confirmation ID."),
   });
 
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
 
-  function onSubmit(values: z.infer<typeof schema>) {
+  async function onSubmit(values: z.infer<typeof schema>) {
     if (values.id !== params.id) {
-      // TODO: Use proper toasting
-      alert("Invalid ID");
+      form.setError("id", { message: "The confirmation ID does not match." });
       return;
     }
 
-    return fetch(`/api/links/${params.id}`, {
-      method: "DELETE",
-    }).then(() => {
+    try {
+      await deleteLink(params.id);
       router.push("/manage");
-    });
+    } catch (error) {
+      if (error instanceof Error) form.setError("id", { message: error.message });
+    }
   }
 
   function onCancel() {
@@ -36,13 +38,21 @@ export default function Page() {
   return (
     <main className={"grid place-items-center"}>
       <div className={"card w-[400px] bg-base-300"}>
-        <div className={"card-body"}>
+        <div className={"card-body gap-4"}>
           <h2 className={"card-title self-center"}>Delete Link</h2>
-          <form id={"form"} onSubmit={form.handleSubmit(onSubmit)}>
-            <p>Are you sure that you want to delete this link? To confirm, please enter the ID of the link below.</p>
-            <p className={"my-2 text-center"}>
-              <span className={"text-lg font-bold"}>{params.id}</span>
-            </p>
+          <form id={"form"} className={"space-y-2"} onSubmit={form.handleSubmit(onSubmit)}>
+            {form.formState.errors.root?.message && (
+              <div className={"alert alert-error"} role={"alert"}>
+                <OctagonMinusIcon className={"size-6"} />
+                <span>{form.formState.errors.root.message}</span>
+              </div>
+            )}
+            <div>
+              <p>Are you sure that you want to delete this link? To confirm, please enter the ID of the link below.</p>
+              <p className={"text-center"}>
+                <span className={"text-lg font-bold"}>{params.id}</span>
+              </p>
+            </div>
             <Controller
               control={form.control}
               name={"id"}

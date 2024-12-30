@@ -1,3 +1,5 @@
+"use server";
+
 import { redis } from "@/lib/integrations/redis";
 import { linkSchema } from "@/lib/schema";
 
@@ -99,6 +101,6 @@ export async function checkLinkExists(id: string) {
   return linkExists === 1;
 }
 
-export function incrementLinkClicks(id: string) {
-  return redis.incr(`${PARENT_KEY}:${id}:clicks`).then((clicks) => clicks);
+export async function incrementLinkClicks(id: string) {
+  return await redis.incr(`${PARENT_KEY}:${id}:clicks`).then((clicks) => clicks);
 }
